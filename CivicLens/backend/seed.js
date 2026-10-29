@@ -1,0 +1,138 @@
+const fs = require('fs');
+const path = require('path');
+
+const DATA_DIR = path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'issues.json');
+
+const sampleIssues = [
+  {
+    id: 'ISSUE-1710001001-101',
+    category: 'Pothole',
+    description: 'Large deep pothole on the right lane near the traffic signal, causing dangerous sudden braking for motorists.',
+    location: '7th Avenue & Market Road',
+    latitude: 12.9716,
+    longitude: 77.5946,
+    reporters: ['CITIZEN-9845012345', 'CITIZEN-9845023456', 'CITIZEN-9845034567'],
+    uniqueReporterCount: 3,
+    severity: 75,
+    urgency: 70,
+    impactScore: 6.0,
+    priorityScore: 39.5,
+    priority: 'Critical',
+    isEmergency: true,
+    emergencyReason: 'Severe vehicle damage hazard near pedestrian crossing',
+    imageUrl: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&auto=format&fit=crop&q=80',
+    beforeImageUrl: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&auto=format&fit=crop&q=80',
+    afterImageUrl: '',
+    status: 'Reported',
+    possibleDuplicate: false,
+    createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 24).toISOString()
+  },
+  {
+    id: 'ISSUE-1710001002-102',
+    category: 'Water Leakage',
+    description: 'Main municipal water pipe rupture leaking hundreds of liters onto sidewalk and flooding bicycle lane.',
+    location: 'Oakridge Boulevard, Sector 4',
+    latitude: 12.9750,
+    longitude: 77.6010,
+    reporters: ['CITIZEN-9123456789', 'CITIZEN-9234567890'],
+    uniqueReporterCount: 2,
+    severity: 80,
+    urgency: 75,
+    impactScore: 4.0,
+    priorityScore: 41.0,
+    priority: 'Medium',
+    isEmergency: false,
+    emergencyReason: '',
+    imageUrl: 'https://images.unsplash.com/photo-1542013936693-884638332954?w=600&auto=format&fit=crop&q=80',
+    beforeImageUrl: 'https://images.unsplash.com/photo-1542013936693-884638332954?w=600&auto=format&fit=crop&q=80',
+    afterImageUrl: '',
+    status: 'In Progress',
+    possibleDuplicate: false,
+    createdAt: new Date(Date.now() - 3600000 * 18).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 18).toISOString()
+  },
+  {
+    id: 'ISSUE-1710001003-103',
+    category: 'Garbage',
+    description: 'Overflowing public community dumpster spreading waste onto pedestrian walkway, attracting stray animals.',
+    location: 'Greenfield Park North Gate',
+    latitude: 12.9680,
+    longitude: 77.5910,
+    reporters: ['CITIZEN-9345678901'],
+    uniqueReporterCount: 1,
+    severity: 50,
+    urgency: 50,
+    impactScore: 2.0,
+    priorityScore: 26.0,
+    priority: 'Low',
+    isEmergency: false,
+    emergencyReason: '',
+    imageUrl: 'https://images.unsplash.com/photo-1605600659873-d808a13e4d2a?w=600&auto=format&fit=crop&q=80',
+    beforeImageUrl: 'https://images.unsplash.com/photo-1605600659873-d808a13e4d2a?w=600&auto=format&fit=crop&q=80',
+    afterImageUrl: '',
+    status: 'Reported',
+    possibleDuplicate: false,
+    createdAt: new Date(Date.now() - 3600000 * 8).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 8).toISOString()
+  },
+  {
+    id: 'ISSUE-1710001004-104',
+    category: 'Streetlight',
+    description: 'Two consecutive streetlights are non-functional, leaving the school crossing completely dark at night.',
+    location: 'Maple Street Crossing',
+    latitude: 12.9810,
+    longitude: 77.5890,
+    reporters: ['CITIZEN-9456789012', 'CITIZEN-9567890123'],
+    uniqueReporterCount: 2,
+    severity: 55,
+    urgency: 60,
+    impactScore: 4.0,
+    priorityScore: 30.5,
+    priority: 'Low',
+    isEmergency: false,
+    emergencyReason: '',
+    imageUrl: 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=600&auto=format&fit=crop&q=80',
+    beforeImageUrl: 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=600&auto=format&fit=crop&q=80',
+    afterImageUrl: '',
+    status: 'In Progress',
+    possibleDuplicate: false,
+    createdAt: new Date(Date.now() - 3600000 * 4).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 4).toISOString()
+  },
+  {
+    id: 'ISSUE-1710001005-105',
+    category: 'Pothole',
+    description: 'Repaired pothole following asphalt resurfacing inspection after rain.',
+    location: 'Pine Hill Road',
+    latitude: 12.9640,
+    longitude: 77.6050,
+    reporters: ['CITIZEN-9678901234'],
+    uniqueReporterCount: 1,
+    severity: 65,
+    urgency: 60,
+    impactScore: 2.0,
+    priorityScore: 32.5,
+    priority: 'Low',
+    isEmergency: false,
+    emergencyReason: '',
+    imageUrl: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&auto=format&fit=crop&q=80',
+    beforeImageUrl: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&auto=format&fit=crop&q=80',
+    afterImageUrl: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80',
+    status: 'Resolved',
+    resolvedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    resolvedBy: 'Officer R. Sharma (Municipal Works)',
+    resolutionNotes: 'Asphalt hot-mix leveling completed. Road reopened to vehicular traffic.',
+    possibleDuplicate: false,
+    createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 2).toISOString()
+  }
+];
+
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+fs.writeFileSync(DATA_FILE, JSON.stringify(sampleIssues, null, 2), 'utf-8');
+console.log(`✅ Successfully seeded ${sampleIssues.length} sample issues with coordinates, reporter arrays, and resolution proofs into ${DATA_FILE}`);

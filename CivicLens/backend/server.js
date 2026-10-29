@@ -71,7 +71,9 @@ app.use(cors({
     'http://127.0.0.1:5173',
     'https://civiclens-ghsiy6hdf-yenumurianithareddy2006-arch.vercel.app'
   ],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Staff-Token']
 }));
 
 app.use(express.json());

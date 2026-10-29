@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 const STAFF_AUTH_SECRET = process.env.STAFF_SECRET || 'CivicLens-Secure-Secret-2026-Municipal-Works';
@@ -67,9 +66,14 @@ const upload = multer({
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://civiclens-ghsiy6hdf-yenumurianithareddy2006-arch.vercel.app'
+  ],
   credentials: true
 }));
+
 app.use(express.json());
 // Serve uploaded images statically
 app.use('/uploads', express.static(UPLOADS_DIR));

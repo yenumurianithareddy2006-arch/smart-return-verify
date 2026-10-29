@@ -48,7 +48,7 @@ export default function App() {
       console.warn('Backend connection error:', err);
       setBackendOnline(false);
       setGlobalError(
-        'Unable to reach CivicLens backend at http://localhost:5000. Ensure server is running (`cd backend && npm start`).'
+        'Unable to reach CivicLens backend at https://civiclens-backend-pjkv.onrender.com. Please check your connection and retry.'
       );
     } finally {
       setLoading(false);
@@ -101,10 +101,14 @@ export default function App() {
           <div className="alert-strip-content">
             <span className="strip-icon">⚠️</span>
             <span>
-              <strong>Backend Disconnected:</strong> Cannot connect to <code>http://localhost:5000/api</code>.
-              Start backend server with: <code>cd backend && npm start</code>
+              <strong>Backend Disconnected:</strong> Cannot connect to{' '}
+              <code>https://civiclens-backend-pjkv.onrender.com/api</code>.
+              Please check your connection and retry.
             </span>
-            <button className="btn btn-sm btn-outline-light" onClick={loadData}>
+            <button
+              className="btn btn-sm btn-outline-light"
+              onClick={loadData}
+            >
               Retry Connection
             </button>
           </div>
